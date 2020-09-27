@@ -1,12 +1,16 @@
 package phone.vishnu.mypoembook.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -17,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, AddEditFragment.newInstance()).addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, AddEditFragment.newInstance(), "Add").addToBackStack(null).commit();
                 setVisibility(false);
             }
         });
@@ -109,13 +113,16 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (id) {
                     case R.id.todoEditIV: {
-
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AddEditFragment.newInstance(poem)).addToBackStack(null).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, AddEditFragment.newInstance(poem), "Edit").addToBackStack(null).commit();
                         setVisibility(false);
                         break;
                     }
                     case R.id.todoGoIV: {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CreateFragment.newInstance(poem)).addToBackStack(null).commit();
+
+                        if (checkAndRequestPermissions())
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, CreateFragment.newInstance(poem), "Create").addToBackStack(null).commit();
+
+                        setVisibility(false);
                         break;
                     }
 
@@ -128,6 +135,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                if (Objects.equals(fragment.getTag(), "Create") || Objects.equals(fragment.getTag(), "Edit") || Objects.equals(fragment.getTag(), "Add"))
+                    setVisibility(true);
+            }
+            super.onBackPressed();
+        } else
+            super.onBackPressed();
+    }
+
     public void setVisibility(boolean makeVisible) {
         if (makeVisible) {
             Objects.requireNonNull(getSupportActionBar()).show();
@@ -138,5 +159,29 @@ public class MainActivity extends AppCompatActivity {
             Objects.requireNonNull(getSupportActionBar()).hide();
             floatingActionButton.setVisibility(View.GONE);
         }
+    }
+
+    private boolean checkAndRequestPermissions() {
+
+        int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+
+        int storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (storage != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (internet != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray
+                    (new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
     }
 }

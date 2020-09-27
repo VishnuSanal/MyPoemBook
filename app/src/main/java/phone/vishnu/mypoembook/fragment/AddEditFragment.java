@@ -92,7 +92,7 @@ public class AddEditFragment extends Fragment {
                         sendData(new Poem(title, description));
 
                     Objects.requireNonNull(getView()).getRootView().clearFocus();
-                    Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).setVisibility(true);
+//                    Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).setVisibility(true);
                     Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).onBackPressed();
                 }
             }
@@ -103,7 +103,7 @@ public class AddEditFragment extends Fragment {
             public void onClick(View v) {
 
                 Objects.requireNonNull(getView()).getRootView().clearFocus();
-                Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).setVisibility(true);
+//                Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).setVisibility(true);
                 Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).onBackPressed();
 
             }
