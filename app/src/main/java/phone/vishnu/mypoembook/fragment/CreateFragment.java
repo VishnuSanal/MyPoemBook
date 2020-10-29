@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import phone.vishnu.mypoembook.R;
 import phone.vishnu.mypoembook.adapter.ViewPagerFragmentAdapter;
+import phone.vishnu.mypoembook.model.CreateOptions;
 import phone.vishnu.mypoembook.model.Poem;
 
 import static phone.vishnu.mypoembook.activity.MainActivity.DESCRIPTION_EXTRA;
@@ -23,7 +24,9 @@ import static phone.vishnu.mypoembook.activity.MainActivity.TITLE_EXTRA;
 
 public class CreateFragment extends Fragment {
 
-    private String[] titles = new String[]{"Font", "Card", "Review"};
+    private static final CreateOptions createOptions = new CreateOptions();
+
+    private final String[] titles = new String[]{"Font", "Background", "Review"};
 
     public CreateFragment() {
     }

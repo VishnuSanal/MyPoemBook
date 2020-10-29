@@ -5,14 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import phone.vishnu.mypoembook.fragment.CardFragment;
+import phone.vishnu.mypoembook.fragment.BackgroundFragment;
 import phone.vishnu.mypoembook.fragment.FontFragment;
 import phone.vishnu.mypoembook.fragment.ReviewFragment;
 import phone.vishnu.mypoembook.model.Poem;
 
 public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
-    private Poem poem;
+    private final Poem poem;
 
     public ViewPagerFragmentAdapter(@NonNull FragmentActivity fragmentActivity, Poem poem) {
         super(fragmentActivity);
@@ -26,7 +26,7 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
             case 0:
                 return FontFragment.newInstance();
             case 1:
-                return CardFragment.newInstance();
+                return BackgroundFragment.newInstance();
             case 2:
                 return ReviewFragment.newInstance();
         }

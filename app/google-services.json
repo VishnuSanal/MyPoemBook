@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "550945444969",
+    "firebase_url": "https://my-poem-book.firebaseio.com",
+    "project_id": "my-poem-book",
+    "storage_bucket": "my-poem-book.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550945444969:android:f6d28ef7dad82f0170bef8",
+        "android_client_info": {
+          "package_name": "phone.vishnu.mypoembook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550945444969-qfchab70ii3sfiqrleubcbgat6ohts9q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwkPM39ww62r-MHCEGOegO9sFtb5qMFFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550945444969-qfchab70ii3sfiqrleubcbgat6ohts9q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

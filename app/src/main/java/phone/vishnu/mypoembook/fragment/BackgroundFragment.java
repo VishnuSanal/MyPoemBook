@@ -9,18 +9,18 @@ import androidx.fragment.app.Fragment;
 
 import phone.vishnu.mypoembook.R;
 
-public class CardFragment extends Fragment {
+public class BackgroundFragment extends Fragment {
 
-    public CardFragment() {
+    public BackgroundFragment() {
     }
 
-    public static CardFragment newInstance() {
-        return new CardFragment();
+    public static BackgroundFragment newInstance() {
+        return new BackgroundFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.fragment_card, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_background, container, false);
         return inflate;
     }
 }
