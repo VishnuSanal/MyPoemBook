@@ -5,14 +5,15 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainActivity"
+    tools:ignore="HardcodedText">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/homeAppbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
         android:visibility="gone"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,17 +36,81 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeAppbarLayout" />
+        app:layout_constraintTop_toBottomOf="@id/homeAppbarLayout"
+        tools:listitem="@layout/single_item" />
+
+    <TextView
+        android:id="@+id/addPoemHintTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/hint_bg"
+        android:fontFamily="cursive"
+        android:padding="4dp"
+        android:text="New Poem"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/addPoemMiniFAB"
+        app:layout_constraintEnd_toStartOf="@id/addPoemMiniFAB"
+        app:layout_constraintTop_toTopOf="@id/addPoemMiniFAB" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addFAB"
+        android:id="@+id/addPoemMiniFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
+        android:contentDescription="Home Add FAB"
         android:focusable="true"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_add_poem"
+        app:elevation="8dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@id/addMainFAB"
+        app:layout_constraintEnd_toEndOf="@id/addMainFAB"
+        app:layout_constraintStart_toStartOf="@id/addMainFAB"
+        app:layout_constraintTop_toTopOf="@id/addMainFAB" />
+
+    <TextView
+        android:id="@+id/addDesignPresetHintTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/hint_bg"
+        android:fontFamily="cursive"
+        android:padding="4dp"
+        android:text="New Design Preset"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/addDesignPresetMiniFAB"
+        app:layout_constraintEnd_toStartOf="@id/addDesignPresetMiniFAB"
+        app:layout_constraintTop_toTopOf="@id/addDesignPresetMiniFAB" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addDesignPresetMiniFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:contentDescription="Home Add FAB"
+        android:focusable="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_new_design_preset"
+        app:elevation="8dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@id/addMainFAB"
+        app:layout_constraintEnd_toEndOf="@id/addMainFAB"
+        app:layout_constraintStart_toStartOf="@id/addMainFAB"
+        app:layout_constraintTop_toTopOf="@id/addMainFAB" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addMainFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:contentDescription="Home Add FAB"
+        android:focusable="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_add_circle"
         app:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

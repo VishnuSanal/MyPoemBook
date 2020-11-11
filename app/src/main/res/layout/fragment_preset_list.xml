@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:background="@color/colorWhite"
+    android:elevation="16dp"
+    tools:context=".fragment.PresetListFragment">
+
+    <ImageView
+        android:id="@+id/presetSampleIconImageView"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="@color/colorAccent"
+        android:contentDescription="Preset Screen Font Logo"
+        android:elevation="12dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/ic_new_design_preset"
+        app:layout_constraintBottom_toTopOf="@id/presetListView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <ListView
+        android:id="@+id/presetListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:divider="@color/spacerColor"
+        android:dividerHeight="1dp"
+        android:focusable="true"
+        android:listSelector="@color/spacerColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/presetSampleIconImageView"
+        tools:listitem="@android:layout/simple_list_item_1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

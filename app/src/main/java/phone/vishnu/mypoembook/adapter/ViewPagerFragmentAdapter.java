@@ -6,17 +6,14 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import phone.vishnu.mypoembook.fragment.BackgroundFragment;
+import phone.vishnu.mypoembook.fragment.ColorFragment;
 import phone.vishnu.mypoembook.fragment.FontFragment;
 import phone.vishnu.mypoembook.fragment.ReviewFragment;
-import phone.vishnu.mypoembook.model.Poem;
 
 public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
-    private final Poem poem;
-
-    public ViewPagerFragmentAdapter(@NonNull FragmentActivity fragmentActivity, Poem poem) {
+    public ViewPagerFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
-        this.poem = poem;
     }
 
     @NonNull
@@ -28,13 +25,15 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
             case 1:
                 return BackgroundFragment.newInstance();
             case 2:
+                return ColorFragment.newInstance();
+            case 3:
                 return ReviewFragment.newInstance();
         }
-        return new FontFragment();
+        return FontFragment.newInstance();
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }

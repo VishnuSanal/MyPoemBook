@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/menu_new_design"
+        android:icon="@drawable/ic_new_design_preset"
+        android:title="New Design Preset"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_new_poem"
+        android:icon="@drawable/ic_add_poem"
+        android:title="New Poem"
+        app:showAsAction="ifRoom" />
+</menu>

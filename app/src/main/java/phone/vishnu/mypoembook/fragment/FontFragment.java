@@ -45,7 +45,6 @@ public class FontFragment extends Fragment {
     private ProgressBar progressBar;
 
     public FontFragment() {
-
     }
 
     public static FontFragment newInstance() {
@@ -67,9 +66,9 @@ public class FontFragment extends Fragment {
             fontList = gson.fromJson(fontArrayListString, type);
 
 //            progressBar.setVisibility(View.GONE);
-            if (getActivity() != null)
+            if (getContext() != null)
                 if (fontDataAdapter == null) {
-                    fontDataAdapter = new FontDataAdapter(Objects.requireNonNull(getActivity()), fontList);
+                    fontDataAdapter = new FontDataAdapter(Objects.requireNonNull(requireContext()), fontList);
                     listView.setAdapter(fontDataAdapter);
                 } else {
                     fontDataAdapter.clear();
@@ -84,13 +83,13 @@ public class FontFragment extends Fragment {
             @Override
             public void onSuccess(ListResult listResult) {
                 fontList = new ArrayList<>();
+
                 for (StorageReference item : listResult.getItems()) {
 
                     String fontString = item.getName().replace(".ttf", "");
 
                     fontString = fontString.toUpperCase().charAt(0) + fontString.substring(1);
 
-//                    if (!fontList.contains(fontString))
                     fontList.add(fontString);
                 }
 
@@ -100,9 +99,9 @@ public class FontFragment extends Fragment {
 
                 sharedPreferenceHelper.setFontArrayString(gson.toJson(fontList));
 
-                if (getActivity() != null)
+                if (getContext() != null)
                     if (fontDataAdapter == null) {
-                        fontDataAdapter = new FontDataAdapter(Objects.requireNonNull(getActivity()), fontList);
+                        fontDataAdapter = new FontDataAdapter(Objects.requireNonNull(requireContext()), fontList);
                         listView.setAdapter(fontDataAdapter);
                     } else {
                         fontDataAdapter.clear();
@@ -114,23 +113,26 @@ public class FontFragment extends Fragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), "", "Please Wait....");
+                final ProgressDialog progressDialog = ProgressDialog.show(requireContext(), "", "Please Wait....");
 
                 String fontString = fontList.get(position).toLowerCase() + ".ttf";
+
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("fonts").child(fontString);
                 final File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "MyPoemBook");
                 final File f = new File(localFile + File.separator + "." + fontString);
 
-                if (localFile.mkdirs()) if (f.mkdirs()) {
+                if (f.exists()) {
                     sharedPreferenceHelper.setFontPath(f.toString());
 
-                    Toast.makeText(getActivity(), "Font Set.....", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Font Set.....", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
 
-                    //                    getActivity().onBackPressed();
+                    //requireActivity().onBackPressed();
                 } else {
+
+                    if (!localFile.exists()) localFile.mkdirs();
 
                     storageReference.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                         @Override
@@ -139,11 +141,10 @@ public class FontFragment extends Fragment {
 
                                 sharedPreferenceHelper.setFontPath(f.toString());
 
-                                Toast.makeText(getActivity(), "Font Set.....", Toast.LENGTH_SHORT).show();
-//                                view.setBackgroundColor(Color.BLACK);
+                                Toast.makeText(requireContext(), "Font Set.....", Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
 
-                                getActivity().onBackPressed();
+                                //requireActivity().onBackPressed();
                             } else {
                                 progressDialog.dismiss();
                             }
@@ -152,14 +153,12 @@ public class FontFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             exception.printStackTrace();
-                            //TODO: Check this
-                            //                            FirebaseCrashlytics.getInstance().recordException(exception);
                             progressDialog.dismiss();
-                            Toast.makeText(getActivity(), "Error.....", Toast.LENGTH_LONG).show();
+                            Toast.makeText(requireContext(), "Error.....", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
-                else Toast.makeText(getActivity(), "Error.....", Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -168,16 +167,16 @@ public class FontFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_font, container, false);
         if (!isNetworkAvailable())
-            Toast.makeText(getActivity(), "Please Connect to the Internet...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Please Connect to the Internet...", Toast.LENGTH_SHORT).show();
 
         progressBar = inflate.findViewById(R.id.fontProgressBar);
         listView = inflate.findViewById(R.id.fontListView);
-        sharedPreferenceHelper = new SharedPreferenceHelper(getActivity());
+        sharedPreferenceHelper = new SharedPreferenceHelper(requireContext());
         return inflate;
     }
 
     private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

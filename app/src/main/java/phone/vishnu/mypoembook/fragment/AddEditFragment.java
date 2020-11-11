@@ -1,9 +1,12 @@
 package phone.vishnu.mypoembook.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -77,6 +80,8 @@ public class AddEditFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        titleTIE.requestFocus();
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,8 +96,7 @@ public class AddEditFragment extends Fragment {
                     else
                         sendData(new Poem(title, description));
 
-                    Objects.requireNonNull(getView()).getRootView().clearFocus();
-//                    Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).setVisibility(true);
+                    hideKeyboard(requireActivity());
                     Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).onBackPressed();
                 }
             }
@@ -102,8 +106,7 @@ public class AddEditFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Objects.requireNonNull(getView()).getRootView().clearFocus();
-//                Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).setVisibility(true);
+                hideKeyboard(requireActivity());
                 Objects.requireNonNull((MainActivity) Objects.requireNonNull(getActivity())).onBackPressed();
 
             }
@@ -133,5 +136,16 @@ public class AddEditFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    public void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View currentFocusedView = activity.getCurrentFocus();
+        if (currentFocusedView != null) {
+            inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

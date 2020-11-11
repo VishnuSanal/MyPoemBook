@@ -1,95 +1,122 @@
 package phone.vishnu.mypoembook.adapter;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.util.ArrayList;
+
 import phone.vishnu.mypoembook.R;
-import phone.vishnu.mypoembook.model.Poem;
+import phone.vishnu.mypoembook.helper.SharedPreferenceHelper;
 
-public class RecyclerViewAdapter extends ListAdapter<Poem, RecyclerViewAdapter.PoemHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private OnItemClickListener listener;
+    private final Context context;
+    private SharedPreferenceHelper sharedPreferenceHelper;
+    private ArrayList<Uri> arr;
+    private ImageView imageView;
 
-    public RecyclerViewAdapter() {
-        super(new DiffUtil.ItemCallback<Poem>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull Poem oldItem, @NonNull Poem newItem) {
-                return oldItem.getId() == newItem.getId();
-            }
+    public RecyclerViewAdapter(Context context) {
+        this.context = context;
+    }
 
-            @Override
-            public boolean areContentsTheSame(@NonNull Poem oldItem, @NonNull Poem newItem) {
-                return oldItem.getTitle().equals(newItem.getTitle()) &&
-                        oldItem.getDescription().equals(newItem.getDescription());
-            }
-        });
+    public RecyclerViewAdapter(Context context, ArrayList<Uri> arr) {
+        this.context = context;
+        this.arr = arr;
     }
 
     @NonNull
     @Override
-    public PoemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_item, parent, false);
-        return new PoemHolder(v);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context).inflate(R.layout.single_image_card, parent, false);
+        sharedPreferenceHelper = new SharedPreferenceHelper(context);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PoemHolder holder, int position) {
-        Poem currentPoem = getItem(position);
-        holder.titleTV.setText(currentPoem.getTitle());
-        holder.descriptionTV.setText(currentPoem.getDescription());
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
+
+        Picasso.get()
+                .load(arr.get(position))
+                .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final ProgressDialog dialog = ProgressDialog.show(context, "", "Please Wait....");
+
+                String[] split = String.valueOf(arr.get(position)).split("%2F")[1].split("\\?");
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images").child(split[0]);
+//                final File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Quotes");//TODO:
+                final File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "MyPoemBook");//TODO:
+
+                final File f = new File(localFile + File.separator + "." + split[0]);
+
+                if (f.exists()) {
+                    sharedPreferenceHelper.setBackgroundPath(f.getAbsolutePath());
+
+                    dialog.dismiss();
+
+                    Toast.makeText(context, "Background Set.....", Toast.LENGTH_LONG).show();
+
+                } else {
+                    if (!localFile.exists()) localFile.mkdirs();
+
+                    storageReference.getFile(f).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                            sharedPreferenceHelper.setBackgroundPath(f.getAbsolutePath());
+
+                            dialog.dismiss();
+
+                            Toast.makeText(context, "Background Set.....", Toast.LENGTH_LONG).show();
+
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            exception.printStackTrace();
+                            Toast.makeText(context, "Error.....", Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
-
-    public Poem getPoem(int position) {
-        return getItem(position);
+    @Override
+    public int getItemCount() {
+        return arr.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(Poem shelve, int id);
-    }
-
-    class PoemHolder extends RecyclerView.ViewHolder {
-        private ImageView editIV, goIV;
-        private TextView titleTV, descriptionTV;
-
-        public PoemHolder(@NonNull View itemView) {
+    class ViewHolder extends RecyclerView.ViewHolder {
+        ViewHolder(View itemView) {
             super(itemView);
-
-            titleTV = itemView.findViewById(R.id.todoTitle);
-            descriptionTV = itemView.findViewById(R.id.todoDescription);
-
-            editIV = itemView.findViewById(R.id.todoEditIV);
-            editIV.setColorFilter(R.color.colorAccent);
-            editIV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION)
-                        listener.onItemClick(getItem(getAdapterPosition()), v.getId());
-                }
-            });
-
-            goIV = itemView.findViewById(R.id.todoGoIV);
-            goIV.setColorFilter(R.color.colorAccent);
-            goIV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION)
-                        listener.onItemClick(getItem(getAdapterPosition()), v.getId());
-                }
-            });
-
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }

@@ -18,7 +18,7 @@
         android:background="@color/colorAccent"
         android:contentDescription="@string/app_name"
         android:foregroundGravity="center"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_add_poem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

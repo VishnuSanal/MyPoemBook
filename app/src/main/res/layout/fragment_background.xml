@@ -1,6 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.BackgroundFragment"></androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".fragment.BackgroundFragment">
+
+    <ImageView
+        android:id="@+id/imagePickSampleIconImageView"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:background="@color/colorAccent"
+        android:contentDescription="Image Pick Screen Image Icon"
+        android:elevation="12dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/ic_insert_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/backgroundColorButton"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="12dp"
+        android:text="From Gallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backgroundImportButton"
+        app:layout_constraintTop_toBottomOf="@id/imagePickSampleIconImageView"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/backgroundImportButton"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:elevation="12dp"
+        android:text="Plain Colour"
+        app:layout_constraintEnd_toStartOf="@id/backgroundColorButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imagePickSampleIconImageView"
+        tools:ignore="HardcodedText" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imagePickRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backgroundColorButton" />
+
+    <ProgressBar
+        android:id="@+id/imagePickRecyclerViewProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/imagePickRecyclerView"
+        app:layout_constraintEnd_toEndOf="@id/imagePickRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/imagePickRecyclerView"
+        app:layout_constraintTop_toTopOf="@id/imagePickRecyclerView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,15 +2,25 @@ package phone.vishnu.mypoembook.model;
 
 public class CreateOptions {
 
-    private String fontPath, bgPath, cardColor;
+    private int id;
+    private String name, fontPath, bgPath, cardColor;
 
     public CreateOptions() {
     }
 
-    public CreateOptions(String fontPath, String bgPath, String cardColor) {
+    public CreateOptions(String name, String fontPath, String bgPath, String cardColor) {
+        this.name = name;
         this.fontPath = fontPath;
         this.bgPath = bgPath;
         this.cardColor = cardColor;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFontPath() {
@@ -35,5 +45,13 @@ public class CreateOptions {
 
     public void setCardColor(String cardColor) {
         this.cardColor = cardColor;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -1,6 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ReviewFragment"></androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".fragment.ReviewFragment">
+
+    <ImageView
+        android:id="@+id/presetReviewSampleIconImageView"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:background="@color/colorAccent"
+        android:contentDescription="Add New Screen Add Icon"
+        android:elevation="12dp"
+        android:foregroundGravity="center"
+        android:src="@drawable/ic_check"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorWhite"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/presetNameTIL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:foregroundGravity="center"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:layout_constraintEnd_toStartOf="@id/reviewPresetAddButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/presetReviewSampleIconImageView"
+        tools:ignore="HardcodedText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/presetNameTIE"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Design Preset Name"
+            android:inputType="textCapWords" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/reviewPresetAddButton"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/reviewPresetCancelButton"
+        app:layout_constraintTop_toBottomOf="@id/presetNameTIL"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/reviewPresetCancelButton"
+        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Cancel"
+        app:layout_constraintEnd_toStartOf="@id/reviewPresetAddButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/presetNameTIL"
+        tools:ignore="HardcodedText" />
+
+    <!--TODO:-->
+    <ImageView
+        android:id="@+id/reviewPresetImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Review Image"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reviewPresetAddButton"
+        tools:ignore="HardcodedText" />
+
+    <ProgressBar
+        android:id="@+id/reviewPresetImageViewProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/reviewPresetImageView"
+        app:layout_constraintEnd_toEndOf="@id/reviewPresetImageView"
+        app:layout_constraintStart_toStartOf="@id/reviewPresetImageView"
+        app:layout_constraintTop_toTopOf="@id/reviewPresetImageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
