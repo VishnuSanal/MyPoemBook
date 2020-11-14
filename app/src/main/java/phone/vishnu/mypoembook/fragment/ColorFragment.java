@@ -1,6 +1,10 @@
 package phone.vishnu.mypoembook.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import phone.vishnu.mypoembook.R;
 import phone.vishnu.mypoembook.helper.ColorAdapter;
+import phone.vishnu.mypoembook.helper.ExportHelper;
 import phone.vishnu.mypoembook.helper.SharedPreferenceHelper;
 
 public class ColorFragment extends Fragment {
@@ -24,8 +29,12 @@ public class ColorFragment extends Fragment {
     public ColorFragment() {
     }
 
-    public static ColorFragment newInstance() {
-        return new ColorFragment();
+    public static ColorFragment newInstance(int COLOR_REQ_CODE) {
+        Bundle args = new Bundle();
+        args.putInt("ColorRequestCode", COLOR_REQ_CODE);
+        ColorFragment fragment = new ColorFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -43,6 +52,8 @@ public class ColorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final int colorRequestCode = getArguments().getInt("ColorRequestCode");
+
         final SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(requireContext());
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -50,9 +61,28 @@ public class ColorFragment extends Fragment {
 
                 String colorString = colorAdapter.getColor(position);
 
-                sharedPreferenceHelper.setCardColorPreference(colorString);
-                Toast.makeText(requireContext(), "Accent Colour Set...", Toast.LENGTH_LONG).show();
+                if (colorRequestCode == 1) {
 
+                    sharedPreferenceHelper.setCardColorPreference(colorString);
+                    Toast.makeText(requireContext(), "Accent Colour Set...", Toast.LENGTH_LONG).show();
+
+
+                } else if (colorRequestCode == 0) {
+
+                    DisplayMetrics metrics = new DisplayMetrics();
+                    metrics.widthPixels = 1080;
+                    metrics.heightPixels = 1920;
+
+                    Bitmap image = Bitmap.createBitmap(metrics.widthPixels, metrics.heightPixels, Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(image);
+                    canvas.drawColor(Color.parseColor(colorString));
+
+                    new ExportHelper(requireContext()).exportBackgroundImage(image);
+
+                    Toast.makeText(requireContext(), "Background Set...", Toast.LENGTH_LONG).show();
+
+                    requireActivity().onBackPressed();
+                }
             }
         });
     }

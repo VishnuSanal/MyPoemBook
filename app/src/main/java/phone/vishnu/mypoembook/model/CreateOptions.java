@@ -1,8 +1,6 @@
 package phone.vishnu.mypoembook.model;
 
 public class CreateOptions {
-
-    private int id;
     private String name, fontPath, bgPath, cardColor;
 
     public CreateOptions() {
@@ -13,14 +11,6 @@ public class CreateOptions {
         this.fontPath = fontPath;
         this.bgPath = bgPath;
         this.cardColor = cardColor;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFontPath() {

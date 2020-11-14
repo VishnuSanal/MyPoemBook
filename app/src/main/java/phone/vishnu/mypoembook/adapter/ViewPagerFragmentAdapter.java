@@ -25,7 +25,7 @@ public class ViewPagerFragmentAdapter extends FragmentStateAdapter {
             case 1:
                 return BackgroundFragment.newInstance();
             case 2:
-                return ColorFragment.newInstance();
+                return ColorFragment.newInstance(1);
             case 3:
                 return ReviewFragment.newInstance();
         }

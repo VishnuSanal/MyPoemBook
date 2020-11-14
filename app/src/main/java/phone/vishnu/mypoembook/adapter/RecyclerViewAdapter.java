@@ -67,8 +67,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 String[] split = String.valueOf(arr.get(position)).split("%2F")[1].split("\\?");
 
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images").child(split[0]);
-//                final File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Quotes");//TODO:
-                final File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "MyPoemBook");//TODO:
+                final File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "MyPoemBook");
 
                 final File f = new File(localFile + File.separator + "." + split[0]);
 

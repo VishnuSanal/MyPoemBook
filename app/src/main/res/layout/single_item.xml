@@ -19,15 +19,15 @@
             android:id="@+id/todoTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_margin="8dp"
-            android:gravity="center"
+            android:textAlignment="textStart"
             android:textColor="#000000"
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@id/todoGoIV"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/lorem" />
 
         <TextView
             android:id="@+id/todoDescription"
@@ -35,11 +35,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:lineSpacingExtra="2sp"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
             app:layout_constraintEnd_toStartOf="@id/todoGoIV"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todoTitle" />
-
+            app:layout_constraintTop_toBottomOf="@id/todoTitle"
+            tools:text="@tools:sample/lorem/random" />
 
         <ImageView
             android:id="@+id/todoGoIV"

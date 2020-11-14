@@ -19,7 +19,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import phone.vishnu.mypoembook.R;
 import phone.vishnu.mypoembook.helper.SharedPreferenceHelper;
@@ -83,7 +85,7 @@ public class ReviewFragment extends Fragment {
 
                 ProgressDialog progressDialog = ProgressDialog.show(requireContext(), "", "Please Wait...");
 
-                String presetName = presetNameTIE.getText().toString().trim();
+                String presetName = Objects.requireNonNull(presetNameTIE.getText()).toString().trim();
 
                 Gson gson = new Gson();
 
@@ -108,12 +110,15 @@ public class ReviewFragment extends Fragment {
                 } else {
                     if (sharedPreferenceHelper.getFontPath() != null && sharedPreferenceHelper.getBackgroundPath() != null && sharedPreferenceHelper.getCardColorPreference() != null) {
 
+                        new File(sharedPreferenceHelper.getBackgroundPath()).renameTo(new File(sharedPreferenceHelper.getBackgroundPath().replace("Temp", presetName)));
+
                         CreateOptions createOptions = new CreateOptions(
                                 presetName,
                                 sharedPreferenceHelper.getFontPath(),
-                                sharedPreferenceHelper.getBackgroundPath(),
+                                sharedPreferenceHelper.getBackgroundPath().replace("Temp", presetName),
                                 sharedPreferenceHelper.getCardColorPreference()
                         );
+
                         sharedPreferenceHelper.resetSharedPreferences();
 
                         presetArrayList.add(createOptions.getName());

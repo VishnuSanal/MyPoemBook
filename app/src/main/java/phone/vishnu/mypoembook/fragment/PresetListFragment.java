@@ -20,7 +20,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import phone.vishnu.mypoembook.R;
+import phone.vishnu.mypoembook.helper.ExportHelper;
 import phone.vishnu.mypoembook.helper.SharedPreferenceHelper;
+import phone.vishnu.mypoembook.model.CreateOptions;
 import phone.vishnu.mypoembook.model.Poem;
 
 import static phone.vishnu.mypoembook.activity.MainActivity.DESCRIPTION_EXTRA;
@@ -80,11 +82,29 @@ public class PresetListFragment extends Fragment {
                     if (((TextView) view).getText().toString().equals("+ New Design Preset")) {
                         requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, CreateFragment.newInstance(), "CreatePreset").addToBackStack(null).commit();
                     } else {
-                        //TODO:Share
+                        Poem poem = new Poem(
+                                getArguments().getString(TITLE_EXTRA),
+                                getArguments().getString(DESCRIPTION_EXTRA)
+
+                        );
+                        new ExportHelper(requireContext()).shareScreenshot(requireContext(), poem, getCreateOption(((TextView) view).getText().toString()));
                     }
                 }
             }
         });
 
+    }
+
+    private CreateOptions getCreateOption(String s) {
+        ArrayList<CreateOptions> createOptionsArrayList = new Gson().fromJson(sharedPreferenceHelper.getCreateOptionsArrayString(),
+                new TypeToken<ArrayList<CreateOptions>>() {
+                }.getType());
+
+        for (CreateOptions createOptions : createOptionsArrayList) {
+            if (createOptions.getName().equals(s)) {
+                return createOptions;
+            }
+        }
+        return new CreateOptions();
     }
 }

@@ -1,15 +1,17 @@
 package phone.vishnu.mypoembook.activity;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -21,8 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.yalantis.ucrop.UCrop;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,14 +35,16 @@ import phone.vishnu.mypoembook.adapter.PoemRecyclerViewAdapter;
 import phone.vishnu.mypoembook.fragment.AddEditFragment;
 import phone.vishnu.mypoembook.fragment.CreateFragment;
 import phone.vishnu.mypoembook.fragment.PresetListFragment;
+import phone.vishnu.mypoembook.helper.ExportHelper;
+import phone.vishnu.mypoembook.helper.SharedPreferenceHelper;
 import phone.vishnu.mypoembook.model.Poem;
 import phone.vishnu.mypoembook.viewmodel.PoemViewModel;
 
 public class MainActivity extends AppCompatActivity {
-    //TODO: Permisiion Handling
     public static final String ID_EXTRA = "phone.vishnu.mypoembook.ID";
     public static final String TITLE_EXTRA = "phone.vishnu.mypoembook.TITLE";
     public static final String DESCRIPTION_EXTRA = "phone.vishnu.mypoembook.DESCRIPTION";
+    public static final int PICK_IMAGE_ID = 22;
 
     private PoemViewModel poemViewModel;
     private PoemRecyclerViewAdapter adapter;
@@ -194,6 +199,28 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+
+            String filePath = new ExportHelper(this).getBGPath();
+
+            if (requestCode == PICK_IMAGE_ID)
+
+                UCrop.of(data.getData(), Uri.fromFile(new File(filePath)))
+                        .withAspectRatio(9, 16)
+                        .withMaxResultSize(1080, 1920)
+                        .start(this);
+
+            else if (requestCode == UCrop.REQUEST_CROP) {
+                new SharedPreferenceHelper(this).setBackgroundPath(filePath);
+                Toast.makeText(this, "Background Set", Toast.LENGTH_SHORT).show();
+            }
+        } else Toast.makeText(this, "Error...", Toast.LENGTH_SHORT).show();
+
+    }
+
     public void setVisibility(boolean makeVisible) {
         if (makeVisible) {
             Objects.requireNonNull(getSupportActionBar()).show();
@@ -210,29 +237,5 @@ public class MainActivity extends AppCompatActivity {
             addDesignPresetFAB.setVisibility(View.GONE);
             addDesignPresetHintTV.setVisibility(View.GONE);
         }
-    }
-
-    private boolean checkAndRequestPermissions() {
-
-        int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
-
-        int storage = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int internet = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
-
-        List<String> listPermissionsNeeded = new ArrayList<>();
-
-        if (storage != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-
-        if (internet != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
-            return false;
-        }
-        return true;
     }
 }

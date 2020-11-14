@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/backgroungConstraintLayout"
     tools:context=".fragment.BackgroundFragment">
 
     <ImageView
@@ -21,25 +22,25 @@
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/backgroundColorButton"
+        android:id="@+id/backgroundFromGalleryButton"
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="12dp"
         android:text="From Gallery"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/backgroundImportButton"
+        app:layout_constraintStart_toEndOf="@id/backgroundPlainColorButton"
         app:layout_constraintTop_toBottomOf="@id/imagePickSampleIconImageView"
         tools:ignore="HardcodedText" />
 
     <Button
-        android:id="@+id/backgroundImportButton"
+        android:id="@+id/backgroundPlainColorButton"
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:elevation="12dp"
         android:text="Plain Colour"
-        app:layout_constraintEnd_toStartOf="@id/backgroundColorButton"
+        app:layout_constraintEnd_toStartOf="@id/backgroundFromGalleryButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imagePickSampleIconImageView"
         tools:ignore="HardcodedText" />
@@ -52,7 +53,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backgroundColorButton" />
+        app:layout_constraintTop_toBottomOf="@id/backgroundFromGalleryButton" />
 
     <ProgressBar
         android:id="@+id/imagePickRecyclerViewProgressBar"
