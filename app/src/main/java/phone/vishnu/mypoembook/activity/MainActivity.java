@@ -145,6 +145,14 @@ public class MainActivity extends AppCompatActivity {
         poemViewModel.getAllPoems().observe(this, new Observer<List<Poem>>() {
             @Override
             public void onChanged(List<Poem> poems) {
+                if (poems.size() == 0) {
+                    findViewById(R.id.recyclerViewEmptyHintIV).setVisibility(View.VISIBLE);
+                    findViewById(R.id.recyclerViewEmptyHintTV).setVisibility(View.VISIBLE);
+                    openFABMenu();
+                } else {
+                    findViewById(R.id.recyclerViewEmptyHintIV).setVisibility(View.GONE);
+                    findViewById(R.id.recyclerViewEmptyHintTV).setVisibility(View.GONE);
+                }
                 adapter.submitList(poems);
             }
         });

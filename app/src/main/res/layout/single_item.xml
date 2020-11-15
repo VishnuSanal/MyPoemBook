@@ -26,8 +26,7 @@
             app:layout_constraintEnd_toStartOf="@id/todoGoIV"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/lorem" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/todoDescription"
@@ -38,8 +37,7 @@
             android:textAlignment="center"
             app:layout_constraintEnd_toStartOf="@id/todoGoIV"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todoTitle"
-            tools:text="@tools:sample/lorem/random" />
+            app:layout_constraintTop_toBottomOf="@id/todoTitle" />
 
         <ImageView
             android:id="@+id/todoGoIV"

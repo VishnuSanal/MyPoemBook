@@ -1,5 +1,6 @@
 package phone.vishnu.mypoembook.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -93,6 +96,59 @@ public class PresetListFragment extends Fragment {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (view instanceof TextView)
+                    if (!((TextView) view).getText().toString().equals("+ New Design Preset"))
+                        showDeleteConfirmation(position);
+                return true;
+            }
+        });
+    }
+
+    private void showDeleteConfirmation(final int position) {
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme);
+
+        builder.setMessage("Confirm Preset Deletion");
+        builder.setPositiveButton("O.K", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                removePreset(position);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.setCancelable(true);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(true);
+
+        alertDialog.show();
+    }
+
+    private void removePreset(int position) {
+        Gson gson = new Gson();
+        ArrayList<CreateOptions> createOptionsArrayList = gson.fromJson(sharedPreferenceHelper.getCreateOptionsArrayString(),
+                new TypeToken<ArrayList<CreateOptions>>() {
+                }.getType());
+        createOptionsArrayList.remove(position);
+        sharedPreferenceHelper.setCreateOptionsArrayString(gson.toJson(createOptionsArrayList));
+
+        ArrayList<String> presetArrayList = gson.fromJson(sharedPreferenceHelper.getPresetArrayString(),
+                new TypeToken<ArrayList<String>>() {
+                }.getType());
+        presetArrayList.remove(position);
+        sharedPreferenceHelper.setPresetArrayString(gson.toJson(presetArrayList));
+
+        presetArrayList.add("+ New Design Preset");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, presetArrayList);
+        listView.setAdapter(arrayAdapter);
     }
 
     private CreateOptions getCreateOption(String s) {
