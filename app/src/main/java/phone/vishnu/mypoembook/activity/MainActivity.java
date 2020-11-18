@@ -199,12 +199,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                if (Objects.equals(fragment.getTag(), "Create") || Objects.equals(fragment.getTag(), "Edit") || Objects.equals(fragment.getTag(), "Add") || Objects.equals(fragment.getTag(), "PresetList"))
-                    setVisibility(true);
+
+            if (getSupportFragmentManager().getFragments().contains(getSupportFragmentManager().findFragmentByTag("ColorPick"))) {
+                super.onBackPressed();
+                return;
             }
-        }
-        super.onBackPressed();
+
+            for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                if (Objects.equals(fragment.getTag(), "Create") || Objects.equals(fragment.getTag(), "Edit") || Objects.equals(fragment.getTag(), "Add") || Objects.equals(fragment.getTag(), "PresetList")) {
+                    setVisibility(true);
+                    super.onBackPressed();
+                    break;
+                } else if (Objects.equals(fragment.getTag(), "ColorPick")) {
+                    super.onBackPressed();
+                    break;
+                }
+            }
+        } else
+            super.onBackPressed();
     }
 
     @Override

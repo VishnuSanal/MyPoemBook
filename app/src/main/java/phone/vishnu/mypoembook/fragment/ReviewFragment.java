@@ -3,12 +3,16 @@ package phone.vishnu.mypoembook.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,14 +28,18 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import phone.vishnu.mypoembook.R;
+import phone.vishnu.mypoembook.helper.ExportHelper;
 import phone.vishnu.mypoembook.helper.SharedPreferenceHelper;
 import phone.vishnu.mypoembook.model.CreateOptions;
+import phone.vishnu.mypoembook.model.Poem;
 
 public class ReviewFragment extends Fragment {
 
     private SharedPreferenceHelper sharedPreferenceHelper;
     private TextInputEditText presetNameTIE;
     private Button saveButton, cancelButton;
+    private ProgressBar progressBar;
+    private ImageView imageView;
 
     public ReviewFragment() {
     }
@@ -40,11 +48,25 @@ public class ReviewFragment extends Fragment {
         return new ReviewFragment();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (sharedPreferenceHelper.getFontPath() != null &&
+                sharedPreferenceHelper.getBackgroundPath() != null &&
+                sharedPreferenceHelper.getCardColorPreference() != null)
+            new ViewReviewImageAsyncTask(requireActivity()).execute(
+                    new CreateOptions(
+                            sharedPreferenceHelper.getFontPath(),
+                            sharedPreferenceHelper.getBackgroundPath(),
+                            sharedPreferenceHelper.getCardColorPreference()
+                    )
+            );
+    }
+
     public void hideKeyboard(Activity activity) {
         InputMethodManager inputManager = (InputMethodManager) activity
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        // check if no view has focus:
         View currentFocusedView = activity.getCurrentFocus();
         if (currentFocusedView != null) {
             inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -59,6 +81,9 @@ public class ReviewFragment extends Fragment {
 
         saveButton = inflate.findViewById(R.id.reviewPresetAddButton);
         cancelButton = inflate.findViewById(R.id.reviewPresetCancelButton);
+
+        imageView = inflate.findViewById(R.id.reviewPresetImageView);
+        progressBar = inflate.findViewById(R.id.reviewPresetImageViewProgressBar);
 
         sharedPreferenceHelper = new SharedPreferenceHelper(requireContext());
 
@@ -146,10 +171,39 @@ public class ReviewFragment extends Fragment {
                         else if (sharedPreferenceHelper.getBackgroundPath() == null)
                             Toast.makeText(requireContext(), "Please select a Background Image", Toast.LENGTH_SHORT).show();
                     }
-                    progressDialog.dismiss();
+//                    progressDialog.dismiss();
                 }
             }
         });
 
+    }
+
+    private class ViewReviewImageAsyncTask extends AsyncTask<CreateOptions, Void, String> {
+
+        private final Context context;
+
+        public ViewReviewImageAsyncTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(CreateOptions... createOptions) {
+            return new ExportHelper(context)
+                    .generateScreenshot(context, new Poem("Preset Preview", "Here's how the preset would look"), createOptions[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            imageView.setImageDrawable(Drawable.createFromPath(s));
+            imageView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }

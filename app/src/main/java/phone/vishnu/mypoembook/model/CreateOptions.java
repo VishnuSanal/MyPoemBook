@@ -6,6 +6,12 @@ public class CreateOptions {
     public CreateOptions() {
     }
 
+    public CreateOptions(String fontPath, String bgPath, String cardColor) {
+        this.fontPath = fontPath;
+        this.bgPath = bgPath;
+        this.cardColor = cardColor;
+    }
+
     public CreateOptions(String name, String fontPath, String bgPath, String cardColor) {
         this.name = name;
         this.fontPath = fontPath;

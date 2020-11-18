@@ -35,6 +35,7 @@ public class PresetListFragment extends Fragment {
 
     private SharedPreferenceHelper sharedPreferenceHelper;
     private ListView listView;
+    private TextView removeHintTV;
 
     public PresetListFragment() {
     }
@@ -52,8 +53,10 @@ public class PresetListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_preset_list, container, false);
+
         sharedPreferenceHelper = new SharedPreferenceHelper(requireContext());
         listView = inflate.findViewById(R.id.presetListView);
+        removeHintTV = inflate.findViewById(R.id.presetListRemoveHint);
 
         final String presetArrayString = sharedPreferenceHelper.getPresetArrayString();
 
@@ -70,6 +73,8 @@ public class PresetListFragment extends Fragment {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, presetList);
         listView.setAdapter(arrayAdapter);
+
+        setRemoveHintVisibility(presetList.size());
 
         return inflate;
     }
@@ -143,12 +148,23 @@ public class PresetListFragment extends Fragment {
         ArrayList<String> presetArrayList = gson.fromJson(sharedPreferenceHelper.getPresetArrayString(),
                 new TypeToken<ArrayList<String>>() {
                 }.getType());
+        new ExportHelper(requireContext()).deleteImage(presetArrayList.get(position));
         presetArrayList.remove(position);
         sharedPreferenceHelper.setPresetArrayString(gson.toJson(presetArrayList));
+
 
         presetArrayList.add("+ New Design Preset");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, presetArrayList);
         listView.setAdapter(arrayAdapter);
+
+        setRemoveHintVisibility(presetArrayList.size());
+    }
+
+    private void setRemoveHintVisibility(int size) {
+        if (size <= 1)
+            removeHintTV.setVisibility(View.GONE);
+        else
+            removeHintTV.setVisibility(View.VISIBLE);
     }
 
     private CreateOptions getCreateOption(String s) {

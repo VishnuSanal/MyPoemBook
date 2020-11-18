@@ -81,6 +81,10 @@ public class ColorFragment extends Fragment {
 
                     Toast.makeText(requireContext(), "Background Set...", Toast.LENGTH_LONG).show();
 
+                    requireActivity().getSupportFragmentManager().beginTransaction()
+                            .remove(requireActivity().getSupportFragmentManager().findFragmentByTag("ColorPick"))
+                            .commit();
+
                     requireActivity().onBackPressed();
                 }
             }
