@@ -32,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="Home RecyclerView Empty Hint ImageView"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/ic_my_poem_book"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/recyclerView"
         app:layout_constraintEnd_toEndOf="@id/recyclerView"

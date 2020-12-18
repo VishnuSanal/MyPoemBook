@@ -14,14 +14,14 @@
         android:layout_margin="8dp"
         android:contentDescription="Splash Screen Logo"
         android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@drawable/ic_my_poem_book"
         app:layout_constraintBottom_toTopOf="@+id/splashScreenAppNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/splashScreenWarningTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         app:fontFamily="serif"
         app:layout_constraintBottom_toTopOf="@id/splashScreenAppNameTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />-->
 
     <TextView
         android:id="@+id/splashScreenAppNameTextView"

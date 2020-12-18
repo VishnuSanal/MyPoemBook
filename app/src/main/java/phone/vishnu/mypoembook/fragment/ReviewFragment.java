@@ -170,6 +170,7 @@ public class ReviewFragment extends Fragment {
                             Toast.makeText(requireContext(), "Please select a Card Colour", Toast.LENGTH_SHORT).show();
                         else if (sharedPreferenceHelper.getBackgroundPath() == null)
                             Toast.makeText(requireContext(), "Please select a Background Image", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
 //                    progressDialog.dismiss();
                 }
